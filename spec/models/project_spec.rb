@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Project, type: :model do
+  it "is invalid without name" do
+    user = User.create(
+      first_name: "Joe",
+      last_name:  "Tester",
+      email:      "joetester@example.com",
+      password:   "dottle-nouveau-pavillion"
+    )
+
+    invalid_project = user.projects.build(
+      name: nil
+    )
+    invalid_project.valid?
+    expect(invalid_project.errors[:name]).to include("can't be blank")
+  end
+
   it "does not allow duplicate project names per user" do
     user = User.create(
       first_name: "Joe",
