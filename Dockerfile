@@ -7,7 +7,8 @@ apt-get update -qq && apt-get install -y \
   yarn \
   unzip \
   vim \
-  jq
+  jq \
+  x-server-xorg
 
 # google-chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
