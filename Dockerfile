@@ -8,8 +8,16 @@ apt-get update -qq && apt-get install -y \
   unzip \
   vim \
   jq \
-  x-server-xorg
+  expect
 
+RUN expect -c " set timeout 10 \
+    spawn apt-get install -y xserver-xorg \
+    expect \"Keyboard layout: \" \
+    send \"1\n\" \
+    exit"
+
+ENV DISPLAY host.docker.internal:0.0
+ENV BROWSER /usr/bin/google-chrome --no-sandbox
 # google-chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
 echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list && \
