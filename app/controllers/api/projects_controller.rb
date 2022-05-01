@@ -23,6 +23,22 @@ module Api
       end
     end
 
+    def destroy
+      @project = current_user.projects&.find_by(id: params[:id])
+
+      # render json: { status: :not_found } unless @project
+      if @project.blank?
+        render json: { errors: { message: '対象がないです' } }, status: :not_found
+        return
+      end
+
+      if @project.destroy
+        render json: { status: :ok }
+      else
+        render json: @project.errors, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def authenticate_user_from_token!
