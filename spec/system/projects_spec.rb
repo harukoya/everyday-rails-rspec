@@ -22,9 +22,20 @@ RSpec.describe "Projects", type: :system do
     }.to change(user.projects, :count).by(1)
   end
 
-  scenario "guest adds a project" do
-    visit projects_path
-    save_and_open_page
-    click_link "New Project"
+  scenario "edit project", js: true do
+    user = FactoryBot.create(:user)
+    project = FactoryBot.create(:project, owner: user)
+
+    visit root_path
+    click_link "Sign in"
+    fill_in "Email", with: user.email
+    fill_in "Password", with: user.password
+    click_button "Log in"
+
+    click_link "#{project.name}"
+    
+    expect(page).to have_content "#{project.name}"
+    expect(page).to have_content "Owner: #{user.name}"
+    expect(page).to have_link "Edit"
   end
 end
