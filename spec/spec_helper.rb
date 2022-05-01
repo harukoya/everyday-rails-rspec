@@ -13,19 +13,6 @@
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
-require 'capybara/rspec'
-require 'selenium-webdriver'
-
-# FIXME deprecation :browser_option
-Capybara.register_driver :headless_chrome do |app|
-  options = ::Selenium::WebDriver::Chrome::Options.new
-
-  options.add_argument('--headless')
-  options.add_argument('--no-sandbox')
-
-  driver = Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: [options])
-end
-
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -104,7 +91,4 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
-  config.before(:each, type: :system) do
-    driven_by :headless_chrome
-  end
 end
