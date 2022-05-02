@@ -27,3 +27,5 @@ RSpec::Matchers.define :have_content_type do |expected|
     types[type.to_sym] || "unknown content type"
   end
 end
+
+RSpec::Matchers.alias_matcher :be_content_type, :have_content_type
