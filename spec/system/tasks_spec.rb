@@ -6,7 +6,8 @@ RSpec.describe "Tasks", type: :system do
     project = FactoryBot.create(:project, name: "RSpec tutorial", owner: user)
     task = project.tasks.create!(name: "Finish RSpec tutorial")
 
-    sign_in_as user
+    sign_in user
+    visit root_path
 
     click_link "RSpec tutorial"
     check "Finish RSpec tutorial"

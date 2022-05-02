@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe "Projects", type: :system do
   scenario "user creates a new project" do
     user = FactoryBot.create(:user)
-    sign_in_as user
+    sign_in user
+    visit root_path
 
     expect {
       click_link "New Project"
@@ -20,7 +21,8 @@ RSpec.describe "Projects", type: :system do
   scenario "edit project" do
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, owner: user)
-    sign_in_as user
+    sign_in user
+    visit root_path
 
     click_link "#{project.name}"
     
