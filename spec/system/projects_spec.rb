@@ -3,12 +3,7 @@ require 'rails_helper'
 RSpec.describe "Projects", type: :system do
   scenario "user creates a new project" do
     user = FactoryBot.create(:user)
-
-    visit root_path
-    click_link "Sign in"
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Log in"
+    sign_in_as user
 
     expect {
       click_link "New Project"
@@ -22,15 +17,10 @@ RSpec.describe "Projects", type: :system do
     }.to change(user.projects, :count).by(1)
   end
 
-  scenario "edit project", js: true do
+  scenario "edit project" do
     user = FactoryBot.create(:user)
     project = FactoryBot.create(:project, owner: user)
-
-    visit root_path
-    click_link "Sign in"
-    fill_in "Email", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Log in"
+    sign_in_as user
 
     click_link "#{project.name}"
     
