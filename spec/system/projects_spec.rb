@@ -78,4 +78,18 @@ RSpec.describe "Projects", type: :system do
     expect(page).to have_content "Completed"
     expect(page).to_not have_button "Complete"
   end
+
+  scenario "user can't watch completed project" do
+    user = FactoryBot.create(:user)
+    not_completed_project = FactoryBot.create(:project, owner: user)
+    completed_project = FactoryBot.create(:project, owner: user, completed: true)
+
+    sign_in user
+    visit projects_path
+
+    aggregate_failures do
+      expect(page).to have_content not_completed_project.name
+      expect(page).to_not have_content completed_project.name
+    end
+  end
 end

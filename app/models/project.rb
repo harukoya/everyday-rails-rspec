@@ -7,6 +7,8 @@ class Project < ApplicationRecord
 
   attribute :due_on, :date, default: -> { Date.current }
 
+  scope :not_completed, -> { where(completed: nil) }
+
   def late?
     due_on.in_time_zone < Date.current.in_time_zone
   end
