@@ -7,10 +7,4 @@
   <% end %>
 </h1>
 
-
-<% @projects.each do |project| %>
-  <h2><%= link_to project.name, project %></h2>
-  <p>
-    <%= project.description %>
-  </p>
-<% end %>
+<%= render "index_projects", projects: @projects %>

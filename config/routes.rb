@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     member do
       patch :complete
     end
+    collection do
+      get :completed
+    end
   end
 
   namespace :api do

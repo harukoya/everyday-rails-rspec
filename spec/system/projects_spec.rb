@@ -69,14 +69,18 @@ RSpec.describe "Projects", type: :system do
     sign_in user
     visit project_path(project)
 
-    expect(page).to_not have_content "Completed"
+    within("h1.heading") do
+      expect(page).to_not have_content "Completed"
+    end
 
     click_button "Complete"
 
     expect(project.reload.completed?).to be true
     expect(page).to have_content "Congratulations, this project is complete!"
-    expect(page).to have_content "Completed"
-    expect(page).to_not have_button "Complete"
+    within("h1.heading") do
+      expect(page).to have_content "Completed"
+      expect(page).to_not have_button "Complete"
+    end
   end
 
   scenario "user can't watch completed project" do
@@ -90,6 +94,23 @@ RSpec.describe "Projects", type: :system do
     aggregate_failures do
       expect(page).to have_content not_completed_project.name
       expect(page).to_not have_content completed_project.name
+    end
+  end
+
+  scenario "user access completed projects from completed projects page" do
+    user = FactoryBot.create(:user)
+    not_completed_project = FactoryBot.create(:project, owner: user)
+    completed_project = FactoryBot.create(:project, owner: user, completed: true)
+
+    sign_in user
+    visit root_path
+    click_link "Completed Projects"
+
+    aggregate_failures do
+      expect(current_path).to eq completed_projects_path
+      expect(page).to have_content "Completed Projects"
+      expect(page).to have_content completed_project.name
+      expect(page).to_not have_content not_completed_project.name
     end
   end
 end

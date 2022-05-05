@@ -7,6 +7,7 @@ class Project < ApplicationRecord
 
   attribute :due_on, :date, default: -> { Date.current }
 
+  scope :completed, -> { where(completed: true) }
   scope :not_completed, -> { where(completed: nil) }
 
   def late?
